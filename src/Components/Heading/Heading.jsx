@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import styles from "./HeadingStyles.module.css";
-import closeIcon from "../../assets/closeIcon.png"; // Replace with your actual URL or use an online resource
-import menuIcon from "../../assets/menuIcon.png"; // Replace with your actual URL or use an online resource
+import sun from "../../assets/sun.svg";
+import moon from "../../assets/moon.svg";
+import closeIconLight from "../../assets/closeMenuLight.png";
+import closeIconDark from "../../assets/closeMenuDark.png";
+import menuIconLight from "../../assets/openMenuLight.png"; 
+import menuIconDark from "../../assets/openMenuDark.png"; 
+import { useTheme } from "../../common/ThemeContext";
 
 function Heading() {
+  const {theme, toggleTheme} = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState("light");
-
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
-  };
+  const closeIcon = (theme === "light") ? closeIconLight : closeIconDark;
+  const menuIcon = (theme === "light") ? menuIconLight : menuIconDark;
+  const themeIcon = (theme === "light") ? sun : moon;
 
   return (
     <header className={styles.navbar} >
@@ -38,10 +40,13 @@ function Heading() {
             <li><a href="#education">Education</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
+          <img
+            className={styles.colorMode}
+            src={themeIcon}
+            alt="Color Mode Changer"
+            onClick={toggleTheme}
+          />
         </div>
-        <button className={styles.themeToggle} onClick={toggleTheme}>
-          {theme === "light" ? "🌙" : "☀️"}
-        </button>
       </nav>
     </header>
   );

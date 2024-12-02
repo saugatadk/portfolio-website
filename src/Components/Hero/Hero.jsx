@@ -1,35 +1,45 @@
+import React, {useState, useEffect} from "react";
 import styles from "./HeroStyles.module.css";
 import heroImg from "../../assets/myimg.jpg";
-import sun from "../../assets/sun.svg";
-import moon from "../../assets/moon.svg";
 import  twitterLight from "../../assets/twitter-light.svg";
 import  twitterDark from "../../assets/twitter-dark.svg";
 import  githubLight from "../../assets/github-light.svg";
 import  githubDark from "../../assets/github-dark.svg";
 import  linkedInLight from "../../assets/linkedin-light.svg";
 import  linkedInDark from "../../assets/linkedin-dark.svg";
-import CV from "../../assets/cv.pdf";
 import { useTheme } from "../../common/ThemeContext";
+import {motion} from "framer-motion";
 
 function Hero() {
-  const {theme, toggleTheme} = useTheme();
-  const themeIcon = (theme === "light") ? sun : moon;
+  const {theme} = useTheme();
   const twitterIcon = (theme === "light") ? twitterLight : twitterDark;
   const githubIcon = (theme === "light") ? githubLight : githubDark;
   const linkedInIcon = (theme === "light") ? linkedInLight : linkedInDark;
+  
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const titles = [
+    "Full Stack Developer",
+    "Computer Engineer",
+    "Tech Enthusiast",
+    "Programmer",
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % titles.length);
+    }, 3000);
+  
+    return () => clearInterval(interval);
+  }, [titles.length]);
+
+
   return (
     <section id="about" className={styles.container}>
-      <div className={styles.colorModeContainer}>
+      <div className={styles.imageContainer}>
         <img
           className={styles.heroImg}
           src={heroImg}
           alt="Profile Picture of Saugat"
-        />
-        <img
-          className={styles.colorMode}
-          src={themeIcon}
-          alt="Color Mode Changer"
-          onClick={toggleTheme}
         />
       </div>
         <div className={styles.info}>
@@ -38,10 +48,24 @@ function Hero() {
               <br />
               Adhikari
           </h1>
-          <h2>
-              Full Stack Developer
-          </h2>
-          
+          {/* <h2 className={styles.rotatingTitle}>
+          {titles[currentIndex]}
+          </h2>  */}
+              <motion.h2
+                key={currentIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.8 }}
+                style={{
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                  color: "#4a90e2",
+                }}
+              >
+                {titles[currentIndex]}
+              </motion.h2>
+
           <span>
             <a href="https://x.com/whoissaugat" target="_blank">
               <img src={twitterIcon} alt="twitter icon" />
@@ -56,9 +80,9 @@ function Hero() {
           <p className={styles.description}>
             Skilled in crafting scalable web applications with expertise in front-end, back-end, and database technologies.
           </p>                       
-            <a href={CV} download>
+            <a href="#contact">
               <button className="hover">
-                Resume
+                Contact Me
               </button>
             </a>
         </div>

@@ -17,7 +17,6 @@ body {
   color: var(--text-color);
 }
 
-/* Navbar styles */
 .navbar {
   position: sticky;
   top: 0;
@@ -47,7 +46,8 @@ body {
   font-size: 1.8rem;
   font-weight: bold;
   text-decoration: none;
-  color: var(--text-color);
+  /* color: var(--text-color); */
+  color: #4a90e2;
   transition: transform 0.3s, filter 0.3s;
   margin-right: auto;
 }
@@ -82,18 +82,19 @@ body {
   filter: brightness(1.2);
 }
 
-.themeToggle {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--text-color);
-  transition: transform 0.3s, filter 0.3s;
+.colorMode{
+  right: 0;
+  width: 24px;
+  padding-left: 15px;
+  transition:transform 0.2s ease;   
 }
 
-.themeToggle:hover {
-  transform: scale(1.1);
-  filter: brightness(1.2);
+.colorMode:hover{
+  cursor: pointer;
+  transform: scale(1.2);
+}
+.colorMode:active{
+  transform: translateY(2px);
 }
 
 

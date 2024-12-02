@@ -62,7 +62,7 @@
 }
 
 
-.colorModeContainer{
+.imageContainer{
     position: relative;
     
     .heroImg{
@@ -71,20 +71,27 @@
     }
 }
 
-.colorMode{
-    position: absolute;
-    right: 0;
-    width: 25px;
-    transition:transform 0.2s ease;   
-}
-
-.colorMode:hover{
-    cursor: pointer;
-    transform: scale(1.2);
-}
-.colorMode:active{
-    transform: translateY(2px);
-}
+.rotating-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4a90e2;
+    animation: fade 1s ease-in-out;
+  }
+  
+  @keyframes fade {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
 
 .description{
     max-width: 32ch;

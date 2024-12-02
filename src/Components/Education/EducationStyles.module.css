@@ -1,0 +1,73 @@
+.education {
+    color: var(--text-color);
+    scroll-margin-top: 40px; 
+  }
+  
+  .educationTitle {
+    text-align: center;
+    font-family: "Rubik", "sans-serif";
+    font-weight: 800;
+    font-size: 32px;
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+  }
+  
+  .educationTree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .educationNode {
+    background-color: var(--background-color);
+    position: relative;
+    padding: 1.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    width: 80%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .educationNode:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+    background-color: var(--background-color);
+
+  }
+  
+  .educationContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background-color: var(--background-color);
+
+  }
+  
+  .educationItemTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .educationDuration {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text-color);
+  }
+  
+  .educationInstitution,
+  .educationAddress {
+    font-size: 1rem;
+  }
+  
+  .educationConnector {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 50px;
+    background-color: var(--line-color);    
+  }
+  

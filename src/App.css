@@ -18,6 +18,11 @@
   --footer-text-color: #bbb;
 }
 
+
+html{
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--background-color);
   display: flex;
@@ -56,6 +61,7 @@ h2,h3{
 h1{
     font-family: "Rubik", "sans-serif";
     font-size: 32px;
+    font-weight: 800;
 }
 
 p{
@@ -69,4 +75,32 @@ p{
 
 .hover{
     cursor: pointer;
+}
+@media(width >=800px){
+  #root{
+    gap: 100px;
+  }
+  h1{
+    font-size: 40px;
+  }
+  h2,h3{
+    font-size: 24px;
+  }
+  p{
+    font-size: 20px;
+  }
+  .sectionTitle{
+    margin-bottom: 60px;
+  }
+}
+@media(width >=1400px){
+  #root{
+    gap: 4rem;
+  }
+  h1{
+    font-size: 48px;
+  }
+  .sectionTitle{
+    margin-bottom: 75px;
+  }
 }

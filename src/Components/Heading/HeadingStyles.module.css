@@ -1,0 +1,120 @@
+:root {
+  --text-color: #333;
+  --bg-color: #fff;
+  --navbar-color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] {
+  --text-color: #ddd;
+  --bg-color: #121212;
+  --navbar-color: rgba(18, 18, 18, 0.9);
+}
+
+body {
+  margin: 0;
+  font-family: "Rubik", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Navbar styles */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background-color: var(--navbar-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.navbarContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2rem;
+}
+
+.navbarMenu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.navbarTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: transform 0.3s, filter 0.3s;
+  margin-right: auto;
+}
+
+.navbarTitle:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+
+.navbarMenuBtn {
+  display: none;
+  cursor: pointer;
+}
+
+.navbarMenuItems {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+}
+
+.navbarMenuItems a {
+  text-decoration: none;
+  font-size: 1rem;
+  color: var(--text-color);
+  transition: transform 0.3s, filter 0.3s;
+}
+
+.navbarMenuItems a:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+.themeToggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: transform 0.3s, filter 0.3s;
+}
+
+.themeToggle:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+
+@media screen and (max-width: 830px) {
+  .navbarMenuBtn {
+    display: block;
+  }
+
+  .navbarMenuItems {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 2rem;
+    background: var(--navbar-color);
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .navbarMenuOpen {
+    display: flex;
+  }
+}

@@ -15,7 +15,6 @@ useEffect(()=>{
 }, [theme]);
 
 const toggleTheme = ()=>{
-    console.log(theme);
     setTheme(t => (t === "light" ? "dark" : "light"));
 }
 

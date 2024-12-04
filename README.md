@@ -1,3 +1,3 @@
-# SAugat Adhikari Portfolio Website
+# Saugat Adhikari Portfolio Website
 
 This is the official portfolio website of Saugat Adhikari.

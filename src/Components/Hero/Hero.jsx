@@ -18,6 +18,8 @@ function Hero() {
   
   const [currentIndex, setCurrentIndex] = useState(0);
   const titles = [
+    "AI/ML Engineer",
+    "Data Scientist",
     "Full Stack Developer",
     "Computer Engineer",
     "Tech Enthusiast",
@@ -78,7 +80,7 @@ function Hero() {
             </a>
           </span>
           <p className={styles.description}>
-            Skilled in crafting scalable web applications with expertise in front-end, back-end, and database technologies.
+            AI/ML Engineer & Full Stack Developer building intelligent applications.
           </p>                       
             <a href="#contact">
               <button className="hover">

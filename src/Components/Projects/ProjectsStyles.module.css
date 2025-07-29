@@ -12,7 +12,9 @@
     }
 
     img{
-        max-width: 250px;
+        width: 230px;
+        height: 230px;
+        object-fit: cover;
         align-self: center;
         background-color: var(--project-card-bg);
         border-radius: 20px;

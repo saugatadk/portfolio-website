@@ -1,5 +1,8 @@
 import styles from "./ProjectsStyles.module.css";
-import secrets from "../../assets/secrets.png";
+import secrets from "../../assets/secrets.jpg";
+import prashna from "../../assets/prashnaai.svg"
+import books from "../../assets/bookshelf.png";
+import dino from "../../assets/dino.jpg"
 import simon from "../../assets/simon.png";
 import blogPost from "../../assets/blogpost.png";
 import drumKit from "../../assets/drumkit.png";
@@ -11,6 +14,20 @@ function Projects() {
     <section className={styles.container} id="projects">
       <h2 className={styles.sectionTitle}>Projects</h2>
       <div className={styles.projectsContainer}>
+        <ProjectCard
+          src={books}
+          link="https://huggingface.co/spaces/saugatadk101/AI-Book-Recommender"
+          h3="AI Book Recommender"
+          p="Get Personalized book recommendations."
+        />  
+      
+        <ProjectCard
+          src={prashna}
+          link="https://prashnaai.vercel.app/"
+          h3="PrashnaAI"
+          p="An AI-powered interview preparation web app."
+        />
+
         <ProjectCard
           src={secrets}
           link="https://github.com/saugatadk/Secrets"
@@ -26,12 +43,19 @@ function Projects() {
         />
 
         <ProjectCard
-          src={toDoList}
-          link="https://github.com/saugatadk/todolist-v2"
-          h3="To Do List"
-          p="A To-Do-List app to manage your daily tasks."
+          src={blogPost}
+          link="https://github.com/saugatadk/blog-post-v1"
+          h3="Blog Post Website"
+          p="A web app to easily upload your blogs to the internet."
         />
 
+        <ProjectCard
+          src={dino}
+          link="https://github.com/saugatadk/Dino-Runner"
+          h3="Dino Runner"
+          p="A fun dinosaur running game using Computer Graphics."
+        />
+        
         <ProjectCard
           src={drumKit}
           link="https://saugatadk.github.io/Drum-Kit/"
@@ -40,10 +64,10 @@ function Projects() {
         />
 
         <ProjectCard
-          src={blogPost}
-          link="https://github.com/saugatadk/blog-post-v1"
-          h3="Blog Post Website"
-          p="A web app to easily upload your blogs to the internet."
+          src={toDoList}
+          link="https://github.com/saugatadk/todolist-v2"
+          h3="To Do List"
+          p="A To-Do-List app to manage your daily tasks."
         />
       </div>
     </section>

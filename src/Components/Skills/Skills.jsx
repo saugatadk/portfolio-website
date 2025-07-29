@@ -35,6 +35,23 @@ function Skills() {
         <SkillList src={checkMark} skill="EJS" />
       </div>
       <hr />
+      <div className={styles.skillList}>
+        <SkillList src={checkMark} skill="TensorFlow" />
+        <SkillList src={checkMark} skill="PyTorch" />
+        <SkillList src={checkMark} skill="Scikit-learn" />
+        <SkillList src={checkMark} skill="Pandas" />
+        <SkillList src={checkMark} skill="NumPy" />
+        <SkillList src={checkMark} skill="Matplotlib" />
+      </div>
+      <hr />
+      <div className={styles.skillList}>
+        <SkillList src={checkMark} skill="Machine Learning" />
+        <SkillList src={checkMark} skill="Deep Learning" />
+        <SkillList src={checkMark} skill="NLP" />
+        <SkillList src={checkMark} skill="Computer Vision" />
+        <SkillList src={checkMark} skill="Data Analysis" />
+      </div>
+      <hr />
     </section>
   );
 }

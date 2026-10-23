@@ -1,42 +1,47 @@
 import styles from "./SkillsStyles.module.css";
 
-const skillRows = [
+const skillCategories = [
   {
     category: "Languages",
-    items: [
-      { name: "Python", evidence: "daily" },
-      { name: "C / C++", evidence: "familiar" },
-      { name: "JavaScript / TypeScript", evidence: "daily" },
-      { name: "SQL", evidence: "used in Badi" }
-    ]
+    skills: ["Python", "C", "C++", "JavaScript", "TypeScript", "SQL", "Bash / Shell"]
   },
   {
-    category: "ML & AI",
-    items: [
-      { name: "PyTorch", evidence: "daily" },
-      { name: "Scikit-Learn", evidence: "used in Customer Segmentation" },
-      { name: "FastMCP", evidence: "used in Badi" },
-      { name: "FalkorDB", evidence: "used in Badi" },
-      { name: "AWS Bedrock", evidence: "used in krishiMitra" }
+    category: "Machine Learning & AI",
+    skills: [
+      "PyTorch",
+      "Scikit-Learn",
+      "OpenCV",
+      "Transformers & Attention",
+      "Pandas",
+      "NumPy",
+      "ChromaDB",
+      "LangChain"
     ]
   },
   {
     category: "Backend & Cloud",
-    items: [
-      { name: "FastAPI", evidence: "used in Badi" },
-      { name: "Django REST", evidence: "used in krishiMitra" },
-      { name: "Node.js", evidence: "used in PrashnaAI" },
-      { name: "Docker", evidence: "used in Badi" },
-      { name: "AWS (S3, DynamoDB)", evidence: "used in krishiMitra" }
+    skills: [
+      "FastAPI",
+      "Django REST",
+      "Node.js",
+      "Docker",
+      "FastMCP",
+      "FalkorDB",
+      "AWS Bedrock",
+      "AWS Rekognition"
     ]
   },
   {
-    category: "Tools & Frameworks",
-    items: [
-      { name: "React & React Native", evidence: "used in krishiMitra & PrashnaAI" },
-      { name: "Git & GitHub", evidence: "daily" },
-      { name: "Linux & Bash", evidence: "daily" },
-      { name: "Pytest", evidence: "used in Badi" }
+    category: "Frontend, Mobile & Tools",
+    skills: [
+      "React",
+      "React Native (Expo)",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Git & GitHub",
+      "Linux",
+      "Pytest",
+      "OpenGL / GLSL"
     ]
   }
 ];
@@ -52,17 +57,16 @@ function Skills() {
         </p>
       </div>
 
-      {/* 4 Plain Rows */}
+      {/* Clean Categorized Rows */}
       <div className={styles.skillsTable}>
-        {skillRows.map((row, rIdx) => (
-          <div key={rIdx} className={styles.skillRow}>
-            <div className={styles.rowCategory}>{row.category}</div>
+        {skillCategories.map((group, gIdx) => (
+          <div key={gIdx} className={styles.skillRow}>
+            <div className={styles.rowCategory}>{group.category}</div>
             <div className={styles.rowItems}>
-              {row.items.map((item, iIdx) => (
-                <div key={iIdx} className={styles.skillItem}>
-                  <span className={styles.skillName}>{item.name}</span>
-                  <span className={styles.skillEvidence}>({item.evidence})</span>
-                </div>
+              {group.skills.map((skill, sIdx) => (
+                <span key={sIdx} className={styles.skillPill}>
+                  {skill}
+                </span>
               ))}
             </div>
           </div>

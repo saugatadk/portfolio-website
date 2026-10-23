@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import styles from "./HeroStyles.module.css";
 import heroImg from "../../assets/myimg.jpg";
 import  twitterLight from "../../assets/twitter-light.svg";
@@ -80,7 +80,7 @@ function Hero() {
             </a>
           </span>
           <p className={styles.description}>
-            AI/ML Engineer & Full Stack Developer building intelligent applications.
+            Final-year computer engineering student building agents, vision models and the apps around them.
           </p>                       
             <a href="#contact">
               <button className="hover">

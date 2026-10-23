@@ -104,9 +104,9 @@ export const compactProjects = [
         isExternal: true
       },
       {
-        url: "https://github.com/saugatadk",
-        label: "GitHub",
-        isCode: true
+        url: "https://www.youtube.com/watch?v=0INC6zuoSXg",
+        label: "Video Walkthrough",
+        isVideo: true
       }
     ]
   }

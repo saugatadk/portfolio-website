@@ -9,6 +9,74 @@ function Projects() {
   const { theme } = useTheme();
   const githubIcon = theme === "light" ? githubLight : githubDark;
 
+  const renderLink = (link, idx) => {
+    if (link.isVideo) {
+      return (
+        <a
+          key={idx}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={idx === 0 ? styles.primaryBtn : styles.secondaryBtn}
+        >
+          <svg
+            className={styles.btnIcon}
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <polygon points="5 3 19 12 5 21 5 3" />
+          </svg>
+          <span>{link.label}</span>
+        </a>
+      );
+    }
+    if (link.isExternal) {
+      return (
+        <a
+          key={idx}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.primaryBtn}
+        >
+          <svg
+            className={styles.btnIcon}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
+          </svg>
+          <span>{link.label}</span>
+        </a>
+      );
+    }
+    return (
+      <a
+        key={idx}
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.secondaryBtn}
+      >
+        <img
+          src={githubIcon}
+          alt=""
+          aria-hidden="true"
+          className={styles.githubIcon}
+        />
+        <span>{link.label}</span>
+      </a>
+    );
+  };
+
   return (
     <section className={styles.container} id="projects">
       {/* Section Header */}
@@ -84,46 +152,7 @@ function Projects() {
 
             {/* Action Buttons */}
             <div className={styles.cardFooter}>
-              {project.links.map((link, idx) => {
-                if (link.isVideo) {
-                  return (
-                    <a
-                      key={idx}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.primaryBtn}
-                    >
-                      <svg
-                        className={styles.btnIcon}
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                      </svg>
-                      <span>{link.label}</span>
-                    </a>
-                  );
-                }
-                return (
-                  <a
-                    key={idx}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.secondaryBtn}
-                  >
-                    <img
-                      src={githubIcon}
-                      alt=""
-                      aria-hidden="true"
-                      className={styles.githubIcon}
-                    />
-                    <span>{link.label}</span>
-                  </a>
-                );
-              })}
+              {project.links.map((link, idx) => renderLink(link, idx))}
             </div>
           </motion.article>
         ))}
@@ -179,52 +208,7 @@ function Projects() {
 
             {/* Action Buttons */}
             <div className={styles.cardFooter}>
-              {project.links.map((link, idx) => {
-                if (link.isExternal) {
-                  return (
-                    <a
-                      key={idx}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.primaryBtn}
-                    >
-                      <svg
-                        className={styles.btnIcon}
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                        <polyline points="15 3 21 3 21 9" />
-                        <line x1="10" y1="14" x2="21" y2="3" />
-                      </svg>
-                      <span>{link.label}</span>
-                    </a>
-                  );
-                }
-                return (
-                  <a
-                    key={idx}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.secondaryBtn}
-                  >
-                    <img
-                      src={githubIcon}
-                      alt=""
-                      aria-hidden="true"
-                      className={styles.githubIcon}
-                    />
-                    <span>{link.label}</span>
-                  </a>
-                );
-              })}
+              {project.links.map((link, idx) => renderLink(link, idx))}
             </div>
           </motion.article>
         ))}

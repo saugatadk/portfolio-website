@@ -7,7 +7,7 @@ import { caseStudies, compactProjects, alsoBuilt } from "./projectsData";
 
 function Projects() {
   const { theme } = useTheme();
-  const githubIcon = theme === "light" ? githubDark : githubLight;
+  const githubIcon = theme === "light" ? githubLight : githubDark;
 
   return (
     <section className={styles.container} id="projects">

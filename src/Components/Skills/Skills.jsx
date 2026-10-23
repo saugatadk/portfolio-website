@@ -1,57 +1,73 @@
 import styles from "./SkillsStyles.module.css";
-import checkMarkDark from "../../assets/checkmark-dark.svg";
-import checkMarkLight from "../../assets/checkmark-light.svg";
-import SkillList from "../../common/SkillList";
-import { useTheme } from "../../common/ThemeContext";
+
+const skillRows = [
+  {
+    category: "Languages",
+    items: [
+      { name: "Python", evidence: "daily" },
+      { name: "C / C++", evidence: "familiar" },
+      { name: "JavaScript / TypeScript", evidence: "daily" },
+      { name: "SQL", evidence: "used in Badi" }
+    ]
+  },
+  {
+    category: "ML & AI",
+    items: [
+      { name: "PyTorch", evidence: "daily" },
+      { name: "Scikit-Learn", evidence: "used in Customer Segmentation" },
+      { name: "FastMCP", evidence: "used in Badi" },
+      { name: "FalkorDB", evidence: "used in Badi" },
+      { name: "AWS Bedrock", evidence: "used in krishiMitra" }
+    ]
+  },
+  {
+    category: "Backend & Cloud",
+    items: [
+      { name: "FastAPI", evidence: "used in Badi" },
+      { name: "Django REST", evidence: "used in krishiMitra" },
+      { name: "Node.js", evidence: "used in PrashnaAI" },
+      { name: "Docker", evidence: "used in Badi" },
+      { name: "AWS (S3, DynamoDB)", evidence: "used in krishiMitra" }
+    ]
+  },
+  {
+    category: "Tools & Frameworks",
+    items: [
+      { name: "React & React Native", evidence: "used in krishiMitra & PrashnaAI" },
+      { name: "Git & GitHub", evidence: "daily" },
+      { name: "Linux & Bash", evidence: "daily" },
+      { name: "Pytest", evidence: "used in Badi" }
+    ]
+  }
+];
 
 function Skills() {
-  const {theme} = useTheme();
-  const checkMark = (theme === "light") ? checkMarkLight : checkMarkDark;
   return (
     <section id="skills" className={styles.container}>
-      <h2 className={styles.sectionTitle}>Skills</h2>
-      <div className={styles.skillList}>
-        <SkillList src={checkMark} skill="HTML" />
-        <SkillList src={checkMark} skill="CSS" />
-        <SkillList src={checkMark} skill="JavaScript" />
-        <SkillList src={checkMark} skill="TypeScript" />
-        <SkillList src={checkMark} skill="React" />
+      {/* Section Header */}
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle}>Skills</h2>
+        <p className={styles.sectionSubtitle}>
+          Technologies and tools I write code with regularly or have deployed in projects.
+        </p>
       </div>
-      <hr />
-      <div className={styles.skillList}>
-        <SkillList src={checkMark} skill="C" />
-        <SkillList src={checkMark} skill="C++" />
-        <SkillList src={checkMark} skill="Python" />
-        <SkillList src={checkMark} skill="Node" />
-        <SkillList src={checkMark} skill="Express" />
+
+      {/* 4 Plain Rows */}
+      <div className={styles.skillsTable}>
+        {skillRows.map((row, rIdx) => (
+          <div key={rIdx} className={styles.skillRow}>
+            <div className={styles.rowCategory}>{row.category}</div>
+            <div className={styles.rowItems}>
+              {row.items.map((item, iIdx) => (
+                <div key={iIdx} className={styles.skillItem}>
+                  <span className={styles.skillName}>{item.name}</span>
+                  <span className={styles.skillEvidence}>({item.evidence})</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
-      <hr />
-      <div className={styles.skillList}>
-        <SkillList src={checkMark} skill="Git" />
-        <SkillList src={checkMark} skill="SQL" />
-        <SkillList src={checkMark} skill="NoSQL" />
-        <SkillList src={checkMark} skill="BootStrap" />
-        <SkillList src={checkMark} skill="Tailwind CSS" />
-        <SkillList src={checkMark} skill="EJS" />
-      </div>
-      <hr />
-      <div className={styles.skillList}>
-        <SkillList src={checkMark} skill="TensorFlow" />
-        <SkillList src={checkMark} skill="PyTorch" />
-        <SkillList src={checkMark} skill="Scikit-learn" />
-        <SkillList src={checkMark} skill="Pandas" />
-        <SkillList src={checkMark} skill="NumPy" />
-        <SkillList src={checkMark} skill="Matplotlib" />
-      </div>
-      <hr />
-      <div className={styles.skillList}>
-        <SkillList src={checkMark} skill="Machine Learning" />
-        <SkillList src={checkMark} skill="Deep Learning" />
-        <SkillList src={checkMark} skill="NLP" />
-        <SkillList src={checkMark} skill="Computer Vision" />
-        <SkillList src={checkMark} skill="Data Analysis" />
-      </div>
-      <hr />
     </section>
   );
 }

@@ -38,16 +38,16 @@ function Heading() {
             <li><a href="#projects">Projects</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#education">Education</a></li>
-            <li><a href="#contact">Contact</a></li>
             <li>
               <a
                 href="https://github.com/saugatadk/AI-NOTES"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Notes
+                Notes ↗
               </a>
             </li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
           <img
             className={styles.colorMode}

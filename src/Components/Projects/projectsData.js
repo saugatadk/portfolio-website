@@ -2,163 +2,238 @@ import badiImg from "../../assets/badi.jpg";
 import krishiImg from "../../assets/krishimitra.jpg";
 import yolov1Img from "../../assets/yolov1.jpg";
 import prashnaImg from "../../assets/prashnaai.jpg";
+import transformerImg from "../../assets/transformer.jpg";
+import bookRecommenderImg from "../../assets/book-recommender.jpg";
+import kmeansImg from "../../assets/kmeans.jpg";
+import dinoImg from "../../assets/dino.jpg";
 
-export const caseStudies = [
+export const categories = [
+  "All",
+  "Agents & LLMs",
+  "Vision & Deep Learning",
+  "Systems & Engines",
+];
+
+export const projects = [
   {
     id: "badi-mcp",
     title: "Badi: Flood Route Intelligence",
+    category: "Agents & LLMs",
     image: badiImg,
-    problem:
-      "Monsoon floods in Nepal wash out unpaved mountain roads, leaving disaster relief teams without verified safe road access to district hospitals.",
-    architecture:
-      "A Python FastMCP server exposes 9 graph tools to Google Gemini online or a deterministic router offline. Road segments, health posts, and scout observations are stored in FalkorDB as an interconnected road network graph.",
-    tradeoff:
-      "Required verified physical scout observations for every hop before marking any route passable, rejecting standard Dijkstra shortest paths. This excludes potentially drivable shortcuts when unconfirmed, prioritizing ambulance safety over travel distance.",
-    whatBroke:
-      "Concurrent reports from local scouts and agency feeds marked the same bridge both open and impassable, causing Cypher queries to loop. Traced conflicting edge updates in FalkorDB and added an automated dispute resolution state that drops contested roads from safe routes until re-inspected.",
-    result:
-      "Tested through 34 pytest suites covering bridge washouts, network partitioning, and dispute resolution on simulated Rasuwa District road networks; no formal field deployment yet.",
-    limitations:
-      "Dependent on manual field scout inputs; cannot infer bridge structural integrity without direct observation.",
+    summary:
+      "Graph-based disaster routing system for monsoon floods in Nepal. Computes verified evacuation paths to district hospitals using FastMCP and FalkorDB.",
+    bullets: [
+      "Exposes 9 FastMCP graph tools to Google Gemini online or offline deterministic router.",
+      "Requires verified physical scout observations before marking hops passable, rejecting blind shortcuts.",
+      "Automated dispute state isolates conflicting bridge reports until field re-inspection.",
+    ],
+    breakdown: {
+      problem:
+        "Monsoon floods destroy mountain roads in Nepal. Relief teams lack verified access to district hospitals.",
+      architecture:
+        "A Python FastMCP server provides 9 graph tools to Gemini. FalkorDB models roads, health posts, and scouts as an interconnected graph network.",
+      tradeoff:
+        "Demands physical scout verification before marking roads passable. Excludes unverified shortcuts, prioritizing ambulance safety over distance.",
+      whatBroke:
+        "Conflicting scout reports marked one bridge open and impassable, causing Cypher query loops. Added a dispute state that excludes contested roads until re-inspection.",
+      result:
+        "Verified through 34 pytest suites across simulated bridge washouts and network partitions in Rasuwa District.",
+      limitations:
+        "Requires manual scout inputs. Cannot evaluate bridge structural integrity without physical observation.",
+    },
     tags: ["Python", "FastMCP", "FalkorDB", "Gemini API", "Pytest", "Docker"],
     links: [
       {
         url: "https://www.youtube.com/watch?v=N2CRGOSuLvU&t=2s",
         label: "Video Walkthrough",
-        isVideo: true
+        isVideo: true,
       },
       {
         url: "https://github.com/saugatadk/Badi",
         label: "GitHub",
-        isCode: true
-      }
-    ]
+        isCode: true,
+      },
+    ],
   },
   {
     id: "krishimitra",
     title: "krishiMitra: Cardamom Disease Assistant",
+    category: "Agents & LLMs",
     image: krishiImg,
-    problem:
-      "Cardamom growers in eastern Nepal lose harvests to fungal blight because agricultural extension officers are days away and advisory leaflets are in English.",
-    architecture:
-      "A React Native mobile app transmits leaf photos to a Django REST backend on AWS. The backend queries Amazon Rekognition Custom Labels for disease classification and formats audio treatment advice in Nepali using AWS Bedrock.",
-    tradeoff:
-      "Processed image models on AWS cloud services instead of running on-device models. This enables budget Android devices to run the app smoothly, but demands intermittent mobile data connections.",
-    whatBroke:
-      "Speech recognition garbled local agricultural terms such as chirke and furkey viruses. Caught this in voice note test logs, then constrained Bedrock's prompt with an explicit phonetic vocabulary filter before generating audio.",
-    result:
-      "Tested against a 200-image dataset of diseased cardamom leaves; achieved reliable classification on common leaf blights in local validation tests, though untested in official agricultural trials. Requires cellular data to upload images.",
+    summary:
+      "Offline-capable mobile assistant for Himalayan cardamom farmers. Diagnoses crop blight from leaf images and provides spoken treatment advice in Nepali.",
+    bullets: [
+      "Transmits leaf photos from React Native to Django REST on AWS for disease diagnosis.",
+      "Classifies fungal infections via Amazon Rekognition Custom Labels model.",
+      "Synthesizes localized audio treatment advice in Nepali through AWS Bedrock.",
+    ],
+    breakdown: {
+      problem:
+        "Fungal blights destroy cardamom harvests in eastern Nepal. Agricultural officers are days away and advisory documents are in English.",
+      architecture:
+        "React Native app sends leaf photos to Django REST on AWS. Amazon Rekognition classifies diseases; AWS Bedrock generates Nepali audio advice.",
+      tradeoff:
+        "Runs inference in AWS cloud rather than on-device. Keeps budget Android phones fast, but requires intermittent cellular connectivity.",
+      whatBroke:
+        "Voice synthesis distorted regional disease terms (chirke, furkey). Added an explicit phonetic vocabulary constraint to Bedrock before audio generation.",
+      result:
+        "Tested on a 200-image dataset of diseased cardamom leaves with reliable classification in local tests.",
+      limitations:
+        "Requires cellular data to upload leaf images. Untested in government agricultural trials.",
+    },
     tags: ["React Native", "Django REST", "AWS Rekognition", "AWS Bedrock", "DynamoDB"],
     links: [
       {
         url: "https://github.com/user-attachments/assets/6e9438fa-49cf-407a-b568-c4dd3ed282d4",
         label: "Video Walkthrough",
-        isVideo: true
+        isVideo: true,
       },
       {
         url: "https://github.com/saugatadk/krishiMitra",
         label: "GitHub",
-        isCode: true
-      }
-    ]
-  }
-];
-
-export const compactProjects = [
+        isCode: true,
+      },
+    ],
+  },
   {
     id: "yolov1-scratch",
     title: "YOLOv1 from Scratch (PyTorch)",
+    category: "Vision & Deep Learning",
     image: yolov1Img,
+    summary:
+      "Pure PyTorch implementation of the original 24-layer YOLOv1 detection architecture and custom multi-part loss function.",
     bullets: [
-      "Implemented the original 24-layer Darknet backbone and custom loss function directly from the Redmon et al. paper without relying on torchvision detection heads.",
-      "Tensor transformations format the 7×7×30 output grid, calculate bounding box IoU matches, and apply Non-Maximum Suppression from scratch.",
-      "Overfit sanity test on Pascal VOC in Google Colab drove train mAP from 0.0 to 0.903 over 35 epochs to verify backpropagation and loss stability."
+      "Built 24-layer Darknet backbone and paper loss in pure PyTorch without torchvision dependencies.",
+      "Implemented 7×7×30 grid tensor math, IoU matching, and Non-Maximum Suppression from scratch.",
+      "Drove Pascal VOC train mAP from 0.0 to 0.903 over 35 epochs to verify convergence.",
     ],
     tags: ["PyTorch", "Darknet CNN", "Pascal VOC", "Colab"],
     links: [
       {
         url: "https://colab.research.google.com/github/saugatadk/YOLOv1-from-scratch/blob/main/train_colab.ipynb",
         label: "Colab Notebook",
-        isExternal: true
+        isExternal: true,
       },
       {
         url: "https://github.com/saugatadk/YOLOv1-from-scratch",
         label: "GitHub",
-        isCode: true
-      }
-    ]
+        isCode: true,
+      },
+    ],
   },
   {
     id: "prashna-ai",
     title: "PrashnaAI: Interview Practice Web App",
+    category: "Agents & LLMs",
     image: prashnaImg,
+    summary:
+      "Interactive technical interview simulator evaluating vocal pacing, filler frequency, and code complexity in real time.",
     bullets: [
-      "Captures browser microphone streams through the Web Audio API and evaluates candidate speech pacing, filler word frequency, and answer clarity using Gemini 1.5 Flash.",
-      "A Node.js backend handles submission parsing and checks code time complexity before rendering review cards."
+      "Evaluates microphone audio for speech pace, filler words, and clarity via Gemini 1.5 Flash.",
+      "Analyzes submitted code and calculates algorithmic time complexity in Node.js.",
+      "Generates visual performance review scorecards with actionable feedback.",
     ],
     tags: ["React", "Node.js", "Web Audio API", "Gemini API", "Vercel"],
     links: [
       {
         url: "https://prashnaai.vercel.app/",
         label: "Live Web App",
-        isExternal: true
+        isExternal: true,
       },
       {
         url: "https://www.youtube.com/watch?v=0INC6zuoSXg",
         label: "Video Walkthrough",
-        isVideo: true
-      }
-    ]
-  }
-];
-
-export const alsoBuilt = [
+        isVideo: true,
+      },
+    ],
+  },
   {
+    id: "transformer-scratch",
     title: "Transformer from Scratch",
-    description:
-      "Character-level GPT decoder (6 blocks, 6 attention heads, 384 embed dim) written in PyTorch on Tiny Shakespeare.",
+    category: "Vision & Deep Learning",
+    image: transformerImg,
+    summary:
+      "Character-level autoregressive GPT decoder built from ground-up mathematical formulas in PyTorch.",
+    bullets: [
+      "Built 6-block, 6-head GPT decoder architecture with 384 embedding dimensions.",
+      "Implemented multi-head causal self-attention masks and learned position embeddings.",
+      "Trained on Tiny Shakespeare to generate coherent character-level text.",
+    ],
+    tags: ["PyTorch", "Transformer", "GPT Decoder", "NLP"],
     links: [
       {
         url: "https://github.com/saugatadk/Transformer-from-scratch",
-        label: "GitHub"
-      }
-    ]
+        label: "GitHub",
+        isCode: true,
+      },
+    ],
   },
   {
+    id: "book-recommender",
     title: "AI Book Recommender",
-    description:
-      "Mood-based semantic search interface using ChromaDB vector lookups and sentence-transformers.",
+    category: "Agents & LLMs",
+    image: bookRecommenderImg,
+    summary:
+      "Mood-based semantic search interface matching subjective emotional queries to books via vector embeddings.",
+    bullets: [
+      "Embeds natural language mood descriptions using sentence-transformers.",
+      "Executes low-latency cosine similarity vector searches in ChromaDB.",
+      "Deployed as an interactive Gradio web application on Hugging Face Spaces.",
+    ],
+    tags: ["Python", "ChromaDB", "Hugging Face", "SentenceTransformers"],
     links: [
       {
         url: "https://huggingface.co/spaces/saugatadk101/AI-Book-Recommender",
-        label: "Hugging Face Space"
+        label: "Hugging Face Space",
+        isExternal: true,
       },
       {
         url: "https://github.com/saugatadk/AI-Book-Recommender",
-        label: "GitHub"
-      }
-    ]
+        label: "GitHub",
+        isCode: true,
+      },
+    ],
   },
   {
+    id: "customer-segmentation",
     title: "Customer Segmentation",
-    description:
-      "Unsupervised clustering comparing WCSS elbow curves and silhouette scores across 4 customer segments in Scikit-Learn.",
+    category: "Vision & Deep Learning",
+    image: kmeansImg,
+    summary:
+      "Unsupervised machine learning pipeline segmenting high-dimensional customer behavior patterns.",
+    bullets: [
+      "Determined optimal cluster count via WCSS elbow curve and silhouette score analysis.",
+      "Grouped customer profiles into 4 distinct behavioral clusters with K-Means.",
+      "Projected multi-attribute feature vectors into 3D space using PCA in Scikit-Learn.",
+    ],
+    tags: ["Python", "Scikit-Learn", "K-Means", "PCA"],
     links: [
       {
         url: "https://github.com/saugatadk/Customer-Segmentation-using-K-Means-Clustering",
-        label: "GitHub"
-      }
-    ]
+        label: "GitHub",
+        isCode: true,
+      },
+    ],
   },
   {
+    id: "dino-runner",
     title: "Dino Runner",
-    description:
-      "2D infinite runner game engine built in C++ with raw OpenGL, custom GLSL shaders, and AABB collision math.",
+    category: "Systems & Engines",
+    image: dinoImg,
+    summary:
+      "2D infinite runner game engine built from scratch in modern C++ with hardware-accelerated OpenGL.",
+    bullets: [
+      "Engineered GLFW window management and modern OpenGL 3.3+ rendering pipeline.",
+      "Wrote custom GLSL vertex and fragment shaders for textured sprite batching.",
+      "Implemented deterministic axis-aligned bounding box (AABB) collision physics.",
+    ],
+    tags: ["C++", "OpenGL", "GLSL Shaders", "GLFW"],
     links: [
       {
         url: "https://github.com/saugatadk/Dino-Runner",
-        label: "GitHub"
-      }
-    ]
-  }
+        label: "GitHub",
+        isCode: true,
+      },
+    ],
+  },
 ];

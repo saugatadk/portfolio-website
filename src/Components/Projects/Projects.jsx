@@ -1,13 +1,103 @@
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ProjectsStyles.module.css";
 import githubLight from "../../assets/github-light.svg";
 import githubDark from "../../assets/github-dark.svg";
 import { useTheme } from "../../common/ThemeContext";
-import { caseStudies, compactProjects, alsoBuilt } from "./projectsData";
+import { projects, categories } from "./projectsData";
+
+const slideVariants = {
+  enter: (direction) => ({
+    x: direction > 0 ? 100 : -100,
+    opacity: 0,
+    scale: 0.98,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      x: { type: "spring", stiffness: 320, damping: 32 },
+      opacity: { duration: 0.28 },
+      scale: { duration: 0.28 },
+    },
+  },
+  exit: (direction) => ({
+    x: direction < 0 ? 100 : -100,
+    opacity: 0,
+    scale: 0.98,
+    transition: {
+      x: { type: "spring", stiffness: 320, damping: 32 },
+      opacity: { duration: 0.22 },
+      scale: { duration: 0.22 },
+    },
+  }),
+};
 
 function Projects() {
   const { theme } = useTheme();
   const githubIcon = theme === "light" ? githubLight : githubDark;
+
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [[currentIndex, direction], setPage] = useState([0, 0]);
+  const [expandedBreakdown, setExpandedBreakdown] = useState(false);
+
+  const filteredProjects =
+    activeCategory === "All"
+      ? projects
+      : projects.filter((p) => p.category === activeCategory);
+
+  const currentProject = filteredProjects[currentIndex] || filteredProjects[0];
+
+  const paginate = useCallback(
+    (newDirection) => {
+      setExpandedBreakdown(false);
+      setPage(([prevIndex]) => {
+        let nextIndex = prevIndex + newDirection;
+        if (nextIndex < 0) nextIndex = filteredProjects.length - 1;
+        if (nextIndex >= filteredProjects.length) nextIndex = 0;
+        return [nextIndex, newDirection];
+      });
+    },
+    [filteredProjects.length]
+  );
+
+  const goToIndex = (targetIndex) => {
+    if (targetIndex === currentIndex) return;
+    setExpandedBreakdown(false);
+    const newDirection = targetIndex > currentIndex ? 1 : -1;
+    setPage([targetIndex, newDirection]);
+  };
+
+  const handleCategoryChange = (category) => {
+    if (category === activeCategory) return;
+    setActiveCategory(category);
+    setExpandedBreakdown(false);
+    setPage([0, 0]);
+  };
+
+  // Keyboard navigation (Left / Right Arrow keys)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.key === "ArrowRight") {
+        paginate(1);
+      } else if (e.key === "ArrowLeft") {
+        paginate(-1);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [paginate]);
+
+  const handleDragEnd = (e, { offset, velocity }) => {
+    const swipeThreshold = 50;
+    if (offset.x < -swipeThreshold || velocity.x < -400) {
+      paginate(1);
+    } else if (offset.x > swipeThreshold || velocity.x > 400) {
+      paginate(-1);
+    }
+  };
 
   const renderLink = (link, idx) => {
     if (link.isVideo) {
@@ -19,12 +109,7 @@ function Projects() {
           rel="noopener noreferrer"
           className={idx === 0 ? styles.primaryBtn : styles.secondaryBtn}
         >
-          <svg
-            className={styles.btnIcon}
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden="true"
-          >
+          <svg className={styles.btnIcon} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <polygon points="5 3 19 12 5 21 5 3" />
           </svg>
           <span>{link.label}</span>
@@ -66,12 +151,7 @@ function Projects() {
         rel="noopener noreferrer"
         className={styles.secondaryBtn}
       >
-        <img
-          src={githubIcon}
-          alt=""
-          aria-hidden="true"
-          className={styles.githubIcon}
-        />
+        <img src={githubIcon} alt="" aria-hidden="true" className={styles.githubIcon} />
         <span>{link.label}</span>
       </a>
     );
@@ -83,169 +163,229 @@ function Projects() {
       <div className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>Featured Projects</h2>
         <p className={styles.sectionSubtitle}>
-          Case studies and software built during my engineering degree, focusing on graph
-          agents, vision models, and applied systems.
+          Interactive showcase of autonomous agents, PyTorch architectures, and applied systems.
         </p>
       </div>
 
-      {/* Part 1: Case Studies */}
-      <div className={styles.caseStudiesList}>
-        {caseStudies.map((project) => (
-          <motion.article
-            key={project.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.35 }}
-            className={styles.caseStudyCard}
-          >
-            <div className={styles.caseStudyImageWrapper}>
-              <img
-                src={project.image}
-                alt={`${project.title} cover`}
-                className={styles.caseStudyImage}
-                loading="lazy"
-              />
-            </div>
-
-            <div className={styles.caseStudyBody}>
-              <h3 className={styles.projectTitle}>{project.title}</h3>
-
-              <ul className={styles.breakdownList}>
-                <li className={styles.breakdownItem}>
-                  <strong className={styles.breakdownLabel}>Problem:</strong>
-                  {project.problem}
-                </li>
-                <li className={styles.breakdownItem}>
-                  <strong className={styles.breakdownLabel}>Architecture:</strong>
-                  {project.architecture}
-                </li>
-                <li className={styles.breakdownItem}>
-                  <strong className={styles.breakdownLabel}>Decision & Trade-off:</strong>
-                  {project.tradeoff}
-                </li>
-                <li className={styles.breakdownItem}>
-                  <strong className={styles.breakdownLabel}>What Broke & Diagnosis:</strong>
-                  {project.whatBroke}
-                </li>
-                <li className={styles.breakdownItem}>
-                  <strong className={styles.breakdownLabel}>Result:</strong>
-                  {project.result}
-                </li>
-                {project.limitations && (
-                  <li className={styles.breakdownItem}>
-                    <strong className={styles.breakdownLabel}>Limitations:</strong>
-                    {project.limitations}
-                  </li>
-                )}
-              </ul>
-
-              {/* Single Tag Row */}
-              <div className={styles.tagRow}>
-                {project.tags.map((tag, idx) => (
-                  <span key={idx} className={styles.tagPill}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className={styles.cardFooter}>
-              {project.links.map((link, idx) => renderLink(link, idx))}
-            </div>
-          </motion.article>
-        ))}
-      </div>
-
-      {/* Part 2: Compact Entries */}
-      <div className={styles.subSectionHeader}>
-        <h3 className={styles.subSectionTitle}>Applied Models & Web Tools</h3>
-        <p className={styles.subSectionSubtitle}>
-          Compact entries for standalone PyTorch architectures and full-stack utilities.
-        </p>
-      </div>
-
-      <div className={styles.compactGrid}>
-        {compactProjects.map((project) => (
-          <motion.article
-            key={project.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.35 }}
-            className={styles.compactCard}
-          >
-            <div className={styles.compactImageWrapper}>
-              <img
-                src={project.image}
-                alt={`${project.title} cover`}
-                className={styles.compactImage}
-                loading="lazy"
-              />
-            </div>
-
-            <div className={styles.compactBody}>
-              <h3 className={styles.projectTitle}>{project.title}</h3>
-
-              <ul className={styles.compactBullets}>
-                {project.bullets.map((bullet, idx) => (
-                  <li key={idx} className={styles.compactBullet}>
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Single Tag Row */}
-              <div className={styles.tagRow}>
-                {project.tags.map((tag, idx) => (
-                  <span key={idx} className={styles.tagPill}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className={styles.cardFooter}>
-              {project.links.map((link, idx) => renderLink(link, idx))}
-            </div>
-          </motion.article>
-        ))}
-      </div>
-
-      {/* Part 3: Also Built */}
-      <div className={styles.alsoBuiltContainer}>
-        <div className={styles.alsoBuiltHeader}>
-          <h3 className={styles.alsoBuiltTitle}>Also Built</h3>
-          <p className={styles.alsoBuiltSubtitle}>
-            Earlier coursework, graphics engines, and algorithmic exploration.
-          </p>
+      {/* Category Filter Tabs */}
+      <div className={styles.toolbar}>
+        <div className={styles.categoryFilters} role="tablist" aria-label="Project categories">
+          {categories.map((cat) => {
+            const count =
+              cat === "All"
+                ? projects.length
+                : projects.filter((p) => p.category === cat).length;
+            const isActive = activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                className={`${styles.categoryPill} ${isActive ? styles.categoryPillActive : ""}`}
+                onClick={() => handleCategoryChange(cat)}
+              >
+                <span>{cat}</span>
+                <span className={styles.categoryCount}>{count}</span>
+              </button>
+            );
+          })}
         </div>
 
-        <ul className={styles.alsoBuiltList}>
-          {alsoBuilt.map((item, idx) => (
-            <li key={idx} className={styles.alsoBuiltItem}>
-              <div className={styles.alsoBuiltContent}>
-                <h4 className={styles.alsoBuiltItemTitle}>{item.title}</h4>
-                <p className={styles.alsoBuiltItemDesc}>{item.description}</p>
-              </div>
-              <div className={styles.alsoBuiltLinks}>
-                {item.links.map((link, lIdx) => (
-                  <a
-                    key={lIdx}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.alsoBuiltLink}
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </li>
+        {/* Counter Indicator */}
+        <div className={styles.counterBadge}>
+          <span className={styles.counterCurrent}>
+            {String(currentIndex + 1).padStart(2, "0")}
+          </span>
+          <span className={styles.counterDivider}>/</span>
+          <span className={styles.counterTotal}>
+            {String(filteredProjects.length).padStart(2, "0")}
+          </span>
+        </div>
+      </div>
+
+      {/* Spotlight Showcase Container with Mid-Height Side Arrows */}
+      <div className={styles.spotlightWrapper}>
+        <button
+          type="button"
+          className={`${styles.navSideBtn} ${styles.prevSideBtn}`}
+          onClick={() => paginate(-1)}
+          aria-label="Previous project (Left arrow)"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        <div className={styles.spotlightContainer}>
+          <AnimatePresence initial={false} custom={direction} mode="wait">
+            {currentProject && (
+              <motion.article
+                key={currentProject.id}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={handleDragEnd}
+                className={styles.spotlightCard}
+              >
+                {/* Left Column: Visual Showcase */}
+                <div className={styles.mediaColumn}>
+                  <div className={styles.imageWrapper}>
+                    <img
+                      src={currentProject.image}
+                      alt={`${currentProject.title} preview`}
+                      className={styles.spotlightImage}
+                    />
+                    <div className={styles.imageOverlayBadge}>
+                      <span className={styles.categoryBadgeText}>{currentProject.category}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Engineering Details */}
+                <div className={styles.detailsColumn}>
+                  <div className={styles.metaRow}>
+                    <span className={styles.projectNumber}>
+                      {String(currentIndex + 1).padStart(2, "0")} • {currentProject.category.toUpperCase()}
+                    </span>
+                  </div>
+
+                  <h3 className={styles.projectTitle}>{currentProject.title}</h3>
+
+                  <p className={styles.projectSummary}>{currentProject.summary}</p>
+
+                  {/* Core Bullets */}
+                  <ul className={styles.bulletList}>
+                    {currentProject.bullets.map((bullet, idx) => (
+                      <li key={idx} className={styles.bulletItem}>
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Optional Deep-Dive Breakdown Toggle */}
+                  {currentProject.breakdown && (
+                    <div className={styles.breakdownSection}>
+                      <button
+                        type="button"
+                        className={styles.toggleBreakdownBtn}
+                        onClick={() => setExpandedBreakdown((prev) => !prev)}
+                        aria-expanded={expandedBreakdown}
+                      >
+                        <span>
+                          {expandedBreakdown ? "Hide Technical Breakdown" : "View Technical Breakdown"}
+                        </span>
+                        <svg
+                          className={`${styles.toggleIcon} ${
+                            expandedBreakdown ? styles.toggleIconRotated : ""
+                          }`}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {expandedBreakdown && (
+                          <motion.div
+                            key="deepdive"
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.28, ease: "easeInOut" }}
+                            className={styles.expandableWrapper}
+                          >
+                            <ul className={styles.breakdownList}>
+                              <li className={styles.breakdownItem}>
+                                <strong className={styles.breakdownLabel}>Problem:</strong>
+                                {currentProject.breakdown.problem}
+                              </li>
+                              <li className={styles.breakdownItem}>
+                                <strong className={styles.breakdownLabel}>Architecture:</strong>
+                                {currentProject.breakdown.architecture}
+                              </li>
+                              <li className={styles.breakdownItem}>
+                                <strong className={styles.breakdownLabel}>Key Trade-off:</strong>
+                                {currentProject.breakdown.tradeoff}
+                              </li>
+                              <li className={styles.breakdownItem}>
+                                <strong className={styles.breakdownLabel}>Diagnosis & Fix:</strong>
+                                {currentProject.breakdown.whatBroke}
+                              </li>
+                              <li className={styles.breakdownItem}>
+                                <strong className={styles.breakdownLabel}>Validation:</strong>
+                                {currentProject.breakdown.result}
+                              </li>
+                              {currentProject.breakdown.limitations && (
+                                <li className={styles.breakdownItem}>
+                                  <strong className={styles.breakdownLabel}>Limitation:</strong>
+                                  {currentProject.breakdown.limitations}
+                                </li>
+                              )}
+                            </ul>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  )}
+
+                  {/* Tech Stack Pills */}
+                  <div className={styles.tagRow}>
+                    {currentProject.tags.map((tag, idx) => (
+                      <span key={idx} className={styles.tagPill}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Actions Footer */}
+                  <div className={styles.cardFooter}>
+                    {currentProject.links.map((link, idx) => renderLink(link, idx))}
+                  </div>
+                </div>
+              </motion.article>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <button
+          type="button"
+          className={`${styles.navSideBtn} ${styles.nextSideBtn}`}
+          onClick={() => paginate(1)}
+          aria-label="Next project (Right arrow)"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Clickable Progress Dots */}
+      <div className={styles.bottomNavStrip}>
+        <div className={styles.dotsContainer} role="tablist" aria-label="Project slide navigation">
+          {filteredProjects.map((p, idx) => (
+            <button
+              key={p.id}
+              type="button"
+              role="tab"
+              aria-selected={currentIndex === idx}
+              aria-label={`Go to ${p.title}`}
+              className={`${styles.navDot} ${currentIndex === idx ? styles.navDotActive : ""}`}
+              onClick={() => goToIndex(idx)}
+            />
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   );

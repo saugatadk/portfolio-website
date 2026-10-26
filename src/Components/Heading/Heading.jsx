@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./HeadingStyles.module.css";
 import sun from "../../assets/sun.svg";
 import moon from "../../assets/moon.svg";
@@ -39,6 +39,15 @@ function Heading() {
             <li><a href="#skills">Skills</a></li>
             <li><a href="#education">Education</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li>
+              <a
+                href="https://github.com/saugatadk/AI-NOTES"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Notes
+              </a>
+            </li>
           </ul>
           <img
             className={styles.colorMode}

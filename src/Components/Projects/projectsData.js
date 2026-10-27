@@ -1,4 +1,5 @@
 import badiImg from "../../assets/badi.jpg";
+import neuroreadImg from "../../assets/neuroread.jpg";
 import krishiImg from "../../assets/krishimitra.jpg";
 import yolov1Img from "../../assets/yolov1.jpg";
 import prashnaImg from "../../assets/prashnaai.jpg";
@@ -15,6 +16,41 @@ export const categories = [
 ];
 
 export const projects = [
+  {
+    id: "neuroread",
+    title: "NeuroRead: Dyslexia-Friendly Reading AI",
+    category: "Agents & LLMs",
+    image: neuroreadImg,
+    summary:
+      "Assistive reading and speech intervention system for individuals with dyslexia. Uses fine-tuned BART text simplification, EasyOCR document scanning, and Groq Whisper pronunciation scoring.",
+    bullets: [
+      "Simplifies complex sentences using fine-tuned BART-Large-CNN to reduce cognitive reading load.",
+      "Extracts printed text from camera captures and PDF documents via an EasyOCR vision pipeline.",
+      "Evaluates speech rate, pauses, and word-level accuracy via Groq Whisper speech recognition.",
+    ],
+    breakdown: {
+      problem:
+        "Individuals with dyslexia experience high cognitive fatigue from dense text, complex syntax, and unguided oral reading practice.",
+      architecture:
+        "React Native app connects to FastAPI backend. PyTorch serves fine-tuned BART-Large-CNN; EasyOCR extracts document text; Groq Whisper-large-v3 transcribes practice audio.",
+      tradeoff:
+        "Processes BART generation and Whisper transcription in backend APIs rather than on-device. Preserves mobile battery life, but requires network connectivity.",
+      whatBroke:
+        "Whisper transcripts misclassified repeated and substituted syllables during oral practice. Implemented a word-level Levenshtein duration-ratio comparator to classify errors accurately.",
+      result:
+        "Trained BART across 752 dyslexia-friendly text pairs over 8 epochs; provides real-time word-level accuracy, pause diagnostics, and WPM tracking.",
+      limitations:
+        "Speech evaluation accuracy depends on microphone quality and quiet ambient environment.",
+    },
+    tags: ["React Native", "FastAPI", "PyTorch", "BART (Hugging Face)", "EasyOCR", "Groq Whisper", "TypeScript"],
+    links: [
+      {
+        url: "https://github.com/i-ces/NeuroRead",
+        label: "GitHub",
+        isCode: true,
+      },
+    ],
+  },
   {
     id: "badi-mcp",
     title: "Badi: Flood Route Intelligence",
@@ -61,27 +97,27 @@ export const projects = [
     category: "Agents & LLMs",
     image: krishiImg,
     summary:
-      "Offline-capable mobile assistant for Himalayan cardamom farmers. Diagnoses crop blight from leaf images and provides spoken treatment advice in Nepali.",
+      "Smart agricultural assistant for Himalayan cardamom farmers. Diagnoses crop blight via a two-stage U2-Net and YOLOv8 pipeline, provides spoken advice in Nepali, and tracks live market prices.",
     bullets: [
-      "Transmits leaf photos from React Native to Django REST on AWS for disease diagnosis.",
-      "Classifies fungal infections via Amazon Rekognition Custom Labels model.",
-      "Synthesizes localized audio treatment advice in Nepali through AWS Bedrock.",
+      "Segments cardamom leaf contours from cluttered field backgrounds using PyTorch U2-Net saliency masking.",
+      "Detects Colletotrichum Leaf Blight and Phyllosticta Leaf Spot via YOLOv8 with 96.42% 5-fold cross-validation accuracy.",
+      "Serves offline-first React Native mobile client through Django REST with Nepali voice query assistance and live market rates.",
     ],
     breakdown: {
       problem:
-        "Fungal blights destroy cardamom harvests in eastern Nepal. Agricultural officers are days away and advisory documents are in English.",
+        "Fungal leaf blight (Colletotrichum and Phyllosticta) devastates cardamom yields in eastern Nepal. Farmers lack field diagnostic tools, local-language guidance, and transparent market trading rates.",
       architecture:
-        "React Native app sends leaf photos to Django REST on AWS. Amazon Rekognition classifies diseases; AWS Bedrock generates Nepali audio advice.",
+        "React Native mobile app connects to a Django REST backend. PyTorch U2-Net generates leaf saliency masks; a YOLOv8 classifier isolates lesion pathology; an audio pipeline processes Nepali voice queries.",
       tradeoff:
-        "Runs inference in AWS cloud rather than on-device. Keeps budget Android phones fast, but requires intermittent cellular connectivity.",
+        "Employs a two-stage saliency-bypass pipeline. U2-Net removes noisy soil and shadow backgrounds, but smart-bypasses clean images to minimize inference latency on standard server hardware.",
       whatBroke:
-        "Voice synthesis distorted regional disease terms (chirke, furkey). Added an explicit phonetic vocabulary constraint to Bedrock before audio generation.",
+        "Data leakage audit revealed 431 duplicate images across initial split folders. Removed cross-split duplicates and validated against strictly unseen test sets (91.67% holdout accuracy).",
       result:
-        "Tested on a 200-image dataset of diseased cardamom leaves with reliable classification in local tests.",
+        "Evaluated via 5-Fold Stratified Cross-Validation: 96.42% ± 1.09% mean accuracy, 95.54% macro F1-score, and 95.18% precision across 2,156 leaf samples.",
       limitations:
-        "Requires cellular data to upload leaf images. Untested in government agricultural trials.",
+        "Severe leaf occlusion or extreme low-light conditions require physical re-capture. Market price feed depends on regional trading hub reporting.",
     },
-    tags: ["React Native", "Django REST", "AWS Rekognition", "AWS Bedrock", "DynamoDB"],
+    tags: ["PyTorch", "YOLOv8", "U2-Net", "Django REST", "React Native", "OpenCV", "Expo"],
     links: [
       {
         url: "https://github.com/user-attachments/assets/6e9438fa-49cf-407a-b568-c4dd3ed282d4",

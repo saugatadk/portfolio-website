@@ -201,18 +201,20 @@
   height: 20px;
 }
 
-/* Spotlight Container - Reduced ~20% in size (880px max-width) */
+/* Spotlight Container - Locked uniform size across all projects (880px max-width, 510px height) */
 .spotlightContainer {
   width: 100%;
   max-width: 880px;
   position: relative;
-  min-height: 400px;
+  height: 510px;
+  min-height: 510px;
   display: flex;
   perspective: 1000px;
 }
 
 .spotlightCard {
   width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: 1fr 1.25fr;
   background: var(--card-bg, #ffffff);
@@ -235,12 +237,11 @@
   box-shadow: 0 16px 45px rgba(0, 0, 0, 0.52);
 }
 
-/* Left Media Column */
+/* Left Media Column - Fixed height matching card */
 .mediaColumn {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 350px;
   background: #0f172a;
   overflow: hidden;
 }
@@ -288,13 +289,33 @@
 
 /* Right Details Column */
 .detailsColumn {
-  padding: 1.5rem 1.75rem;
+  padding: 1.4rem 1.65rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.65rem;
   text-align: left;
   box-sizing: border-box;
-  justify-content: space-between;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+[data-theme="dark"] .detailsColumn {
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.detailsColumn::-webkit-scrollbar {
+  width: 5px;
+}
+
+.detailsColumn::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+[data-theme="dark"] .detailsColumn::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .metaRow {
@@ -456,6 +477,7 @@
 
 /* Tags */
 .tagRow {
+  margin-top: auto;
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
@@ -623,17 +645,23 @@
   .spotlightContainer {
     min-width: 0;
     flex: 1;
+    height: 590px;
+    min-height: 590px;
   }
   .spotlightCard {
     grid-template-columns: 1fr;
     min-width: 0;
+    height: 100%;
   }
   .mediaColumn {
-    min-height: 220px;
-    height: 220px;
+    min-height: 200px;
+    height: 200px;
+    flex-shrink: 0;
   }
   .detailsColumn {
-    padding: 1.25rem;
+    padding: 1.15rem;
+    height: calc(100% - 200px);
+    overflow-y: auto;
   }
   .navSideBtn {
     width: 38px;
@@ -659,6 +687,21 @@
   .spotlightWrapper {
     gap: 0.35rem;
   }
+  .spotlightContainer {
+    height: 620px;
+    min-height: 620px;
+  }
+  .mediaColumn {
+    min-height: 180px;
+    height: 180px;
+    flex-shrink: 0;
+  }
+  .detailsColumn {
+    padding: 1rem 0.85rem;
+    gap: 0.55rem;
+    height: calc(100% - 180px);
+    overflow-y: auto;
+  }
   .navSideBtn {
     width: 32px;
     height: 32px;
@@ -666,10 +709,6 @@
   .navSideBtn svg {
     width: 15px;
     height: 15px;
-  }
-  .detailsColumn {
-    padding: 1rem 0.85rem;
-    gap: 0.65rem;
   }
   .projectTitle {
     font-size: 1.15rem;

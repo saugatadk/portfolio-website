@@ -1,6 +1,7 @@
 import badiImg from "../../assets/badi.jpg";
 import neuroreadImg from "../../assets/neuroread.jpg";
 import krishiImg from "../../assets/krishimitra.jpg";
+import ragImg from "../../assets/rag.jpg";
 import yolov1Img from "../../assets/yolov1.jpg";
 import prashnaImg from "../../assets/prashnaai.jpg";
 import transformerImg from "../../assets/transformer.jpg";
@@ -126,6 +127,55 @@ export const projects = [
       },
       {
         url: "https://github.com/saugatadk/krishiMitra",
+        label: "GitHub",
+        isCode: true,
+      },
+    ],
+  },
+  {
+    id: "document-rag",
+    title: "Document RAG Assistant",
+    category: "Agents & LLMs",
+    image: ragImg,
+    summary:
+      "End-to-end retrieval-augmented generation assistant for heterogeneous documents. Combines multi-format file ingestion, dense vector retrieval via L2-normalized FAISS IndexFlatIP, and grounded Gemini 3.1 answer synthesis with verified citations.",
+    bullets: [
+      "Parses 6 document formats (PDF, DOCX, XLSX, CSV, TXT, JSON) into 1,000-character overlapping chunks via LangChain loaders.",
+      "Indexes 384-dimensional dense vector embeddings with FAISS IndexFlatIP to perform sub-15ms cosine similarity search.",
+      "Synthesizes grounded answers using Gemini with source attributions.",
+    ],
+    breakdown: {
+      problem:
+        "Organizations manage fragmented documentation across incompatible formats (PDFs, spreadsheets, text files). Standard keyword search fails on semantic queries, while vanilla LLMs hallucinate without grounded context.",
+      architecture:
+        "Built with FastAPI and Gradio Blocks. Ingestion parses documents using LangChain community loaders; a singleton SentenceTransformer (all-MiniLM-L6-v2) generates 384-d embeddings; FAISS IndexFlatIP retrieves top-k chunks; and Gemini 3.1 Flash-Lite synthesizes verified responses.",
+      tradeoff:
+        "Uses in-memory IndexFlatIP rather than an external distributed vector database. Eliminates cloud database connection overhead and infrastructure cost for session-isolated workloads, but requires server RAM scaling for large document corpora.",
+      whatBroke:
+        "FAISS IndexFlatL2 calculated squared Euclidean distances that distorted similarity thresholds across variable-length text chunks. Calibrated search accuracy by migrating to IndexFlatIP and applying L2-normalization to both chunk and query vectors to constrain cosine scores strictly to [-1, 1].",
+      result:
+        "Deployed live on Hugging Face Spaces with dual interfaces (FastAPI REST API + Gradio web UI). Delivers sub-150ms retrieval latency with 100% session isolation preventing cross-user data leakage.",
+      limitations:
+        "Vector index resets on container restart unless persisted to disk; multi-page scanned image PDFs require OCR preprocessing prior to ingestion.",
+    },
+    tags: [
+      "Python",
+      "FastAPI",
+      "FAISS",
+      "Google Gemini API",
+      "Sentence-Transformers",
+      "LangChain",
+      "Gradio",
+      "Docker",
+    ],
+    links: [
+      {
+        url: "https://huggingface.co/spaces/saugatadk101/document-rag-assistant",
+        label: "Live Demo",
+        isExternal: true,
+      },
+      {
+        url: "https://github.com/saugatadk/RAG",
         label: "GitHub",
         isCode: true,
       },
